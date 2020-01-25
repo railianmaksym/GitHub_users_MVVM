@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GitHub users MVVM</string>
+    <string name="users_list_title">GitHub Users List</string>
+    <string name="user_avatar_content_description">user avatar</string>
+</resources>
