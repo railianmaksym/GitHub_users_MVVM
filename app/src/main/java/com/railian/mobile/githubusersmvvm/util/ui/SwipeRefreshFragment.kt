@@ -19,10 +19,13 @@ abstract class SwipeRefreshFragment(@LayoutRes private val layout: Int) : Fragme
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(layout, container, false)
-        return SwipeRefreshLayout(context!!).apply {
+        swipeRefreshLayout = SwipeRefreshLayout(context!!).apply {
             addView(view)
             setOnRefreshListener(this@SwipeRefreshFragment)
-            setColorSchemeColors(ContextCompat.getColor(context!!, R.color.colorPrimary))
+            setColorSchemeColors(ContextCompat.getColor(context!!, R.color.black))
         }
+        return swipeRefreshLayout
     }
+
+    abstract fun onStateChanged(screenState: ScreenState)
 }
