@@ -12,7 +12,7 @@ class GitHubUsersApplication : Application() {
 
         appComponent = DaggerAppComponent
             .builder()
-            .gitHubApiModule(GitHubApiModule())
+            .gitHubApiModule(GitHubApiModule(this))
             .build()
 
     }

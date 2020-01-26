@@ -4,8 +4,10 @@ package com.railian.mobile.githubusersmvvm.ui.usersList
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.railian.mobile.githubusersmvvm.GitHubUsersApplication
 import com.railian.mobile.githubusersmvvm.R
+import com.railian.mobile.githubusersmvvm.di.application.DaggerViewModelFactory
 import com.railian.mobile.githubusersmvvm.di.usersList.UsersListModule
 import com.railian.mobile.githubusersmvvm.util.ui.LastItemListener
 import com.railian.mobile.githubusersmvvm.util.ui.ScreenState
@@ -15,13 +17,17 @@ import javax.inject.Inject
 
 class UsersListFragment : SwipeRefreshFragment(R.layout.fragment_users_list) {
 
-    protected lateinit var viewModel: UsersListViewModel
-        @Inject set
+    @Inject
+    lateinit var viewModelFactory: DaggerViewModelFactory
+
+    private lateinit var viewModel: UsersListViewModel
     private var isLoading: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GitHubUsersApplication.appComponent.getModule(UsersListModule()).inject(this)
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(UsersListViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

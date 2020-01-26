@@ -1,7 +1,9 @@
 package com.railian.mobile.githubusersmvvm.di.application
 
+import android.content.Context
 import com.google.gson.GsonBuilder
 import com.railian.mobile.githubusersmvvm.data.network.GitHubApi
+import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -11,7 +13,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-class GitHubApiModule {
+class GitHubApiModule(private val context: Context) {
     @Provides
     @Singleton
     internal fun providesGitHubApi(): GitHubApi {
@@ -23,6 +25,7 @@ class GitHubApiModule {
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(15, TimeUnit.SECONDS)
             .writeTimeout(15, TimeUnit.SECONDS)
+            .addInterceptor(ChuckInterceptor(context))
             .build()
 
         val retrofit = Retrofit.Builder()

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.railian.mobile.githubusersmvvm.data.pojo.GitHubUser
 import com.railian.mobile.githubusersmvvm.ui.usersList.adapters.UsersListAdapter
 import com.railian.mobile.githubusersmvvm.util.mvvm.BaseViewModel
+import com.railian.mobile.githubusersmvvm.util.network.HttpResult
 import com.railian.mobile.githubusersmvvm.util.ui.ScreenState
 import javax.inject.Inject
 
@@ -17,43 +18,27 @@ class UsersListViewModel @Inject constructor(
     val screenState = MutableLiveData<ScreenState>()
 
     fun loadUsers(isReload: Boolean = false) {
+        screenState.value = if (isReload) ScreenState.REFRESH else ScreenState.LOADING
 
-        usersListAdapter.users = mutableListOf(
-            GitHubUser(
-                avatarUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Kotlin-logo.svg/1200px-Kotlin-logo.svg.png",
-                login = "user"
-            ),
-            GitHubUser(
-                avatarUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Kotlin-logo.svg/1200px-Kotlin-logo.svg.png",
-                login = "user"
-            ),
-            GitHubUser(
-                avatarUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Kotlin-logo.svg/1200px-Kotlin-logo.svg.png",
-                login = "user"
-            )
+        launchCoroutine(
+            {
+                if (isReload) {
+                    repository.loadUsers(perPage = usersListAdapter.itemCount)
+                } else {
+                    repository.loadUsers(lastLoadedUserId = lastLoadedUserId)
+                }
+            },
+            {
+                when (val result = it) {
+                    is HttpResult.Success -> {
+                        onSuccessLoadUsers(result.data, isReload)
+                    }
+                    is HttpResult.Error -> {
+                        onErrorLoadUsers(result.exception)
+                    }
+                }
+            }
         )
-
-//        screenState.value = if (isReload) ScreenState.REFRESH else ScreenState.LOADING
-//
-//        launchCoroutine(
-//            {
-//                if (isReload) {
-//                    repository.loadUsers(perPage = usersListAdapter.itemCount)
-//                } else {
-//                    repository.loadUsers(lastLoadedUserId = lastLoadedUserId)
-//                }
-//            },
-//            {
-//                when (val result = it) {
-//                    is HttpResult.Success -> {
-//                        onSuccessLoadUsers(result.data, isReload)
-//                    }
-//                    is HttpResult.Error -> {
-//                        onErrorLoadUsers(result.exception)
-//                    }
-//                }
-//            }
-//        )
     }
 
     private fun onSuccessLoadUsers(data: List<GitHubUser>, isReload: Boolean) {

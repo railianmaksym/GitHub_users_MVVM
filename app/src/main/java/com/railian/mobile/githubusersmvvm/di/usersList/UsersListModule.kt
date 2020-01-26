@@ -15,10 +15,4 @@ class UsersListModule {
     fun provideUsersListRepository(gitHubApi: GitHubApi): UsersListRepository{
         return UsersListRepositoryImpl(gitHubApi)
     }
-
-    @UsersListScope
-    @Provides
-    fun provideUsersListViewModel(repository: UsersListRepository): UsersListViewModel {
-        return UsersListViewModel(repository)
-    }
 }
