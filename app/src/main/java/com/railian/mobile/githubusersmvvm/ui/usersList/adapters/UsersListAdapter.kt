@@ -6,11 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.railian.mobile.githubusersmvvm.R
 import com.railian.mobile.githubusersmvvm.data.pojo.GitHubUser
+import com.railian.mobile.githubusersmvvm.ui.usersList.UsersListFragmentDirections
+import com.railian.mobile.githubusersmvvm.ui.usersList.UsersListViewModel
 import com.railian.mobile.githubusersmvvm.util.extensions.loadCircleImageFromUrl
+import com.railian.mobile.githubusersmvvm.util.mvvm.NavigationCommand
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_users_list.*
 
-class UsersListAdapter : RecyclerView.Adapter<UsersListAdapter.UserViewHolder>() {
+class UsersListAdapter(
+    private val viewModel: UsersListViewModel
+) : RecyclerView.Adapter<UsersListAdapter.UserViewHolder>() {
 
     var users: MutableList<GitHubUser> = mutableListOf()
         set(value) {
@@ -36,6 +41,14 @@ class UsersListAdapter : RecyclerView.Adapter<UsersListAdapter.UserViewHolder>()
         with(holder) {
             username.text = user.login
             avatar.loadCircleImageFromUrl(user.avatarUrl)
+            userLayout.setOnClickListener {
+                viewModel.navigationCommands.value =
+                    NavigationCommand.To(
+                        UsersListFragmentDirections.actionUsersListFragmentToUserDetailsFragment(
+                            user.login
+                        )
+                    )
+            }
         }
     }
 

@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.railian.mobile.githubusersmvvm.GitHubUsersApplication
 import com.railian.mobile.githubusersmvvm.R
 import com.railian.mobile.githubusersmvvm.di.application.DaggerViewModelFactory
 import com.railian.mobile.githubusersmvvm.di.usersList.UsersListModule
+import com.railian.mobile.githubusersmvvm.util.mvvm.NavigationCommand
 import com.railian.mobile.githubusersmvvm.util.ui.LastItemListener
 import com.railian.mobile.githubusersmvvm.util.ui.ScreenState
 import com.railian.mobile.githubusersmvvm.util.ui.SwipeRefreshFragment
@@ -21,6 +23,7 @@ class UsersListFragment : SwipeRefreshFragment(R.layout.fragment_users_list) {
     lateinit var viewModelFactory: DaggerViewModelFactory
 
     private lateinit var viewModel: UsersListViewModel
+
     private var isLoading: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +48,18 @@ class UsersListFragment : SwipeRefreshFragment(R.layout.fragment_users_list) {
             })
         }
 
-        viewModel.screenState.observe(this, Observer<ScreenState> {
+        viewModel.navigationCommands.observe(this,
+            Observer<NavigationCommand> {
+                when (it) {
+                    is NavigationCommand.To -> {
+                        findNavController().navigate(it.directions)
+                    }
+                    else -> return@Observer
+                }
+                viewModel.navigationCommands.value = null
+            })
+
+        viewModel.screenState.observe(this, Observer {
             onStateChanged(it)
         })
 
