@@ -75,6 +75,7 @@ class UsersListFragment : SwipeRefreshFragment(R.layout.fragment_users_list) {
                 swipeRefreshLayout.isRefreshing = false
             }
             ScreenState.LOADING -> {
+                viewModel.usersListAdapter.showLoading()
             }
             ScreenState.REFRESH -> {
                 swipeRefreshLayout.isRefreshing = true

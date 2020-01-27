@@ -44,7 +44,7 @@ class UsersListViewModel @Inject constructor(
 
     private fun onSuccessLoadUsers(data: List<GitHubUser>, isReload: Boolean) {
         if (isReload) {
-            usersListAdapter.users = data as MutableList<GitHubUser>
+            usersListAdapter.users = data as MutableList<GitHubUser?>
         } else {
             usersListAdapter.addUsers(data)
             lastLoadedUserId = usersListAdapter.users.lastOrNull()?.id ?: 1

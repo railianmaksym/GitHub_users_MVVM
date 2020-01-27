@@ -15,9 +15,14 @@ import kotlinx.android.synthetic.main.item_users_list.*
 
 class UsersListAdapter(
     private val viewModel: UsersListViewModel
-) : RecyclerView.Adapter<UsersListAdapter.UserViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var users: MutableList<GitHubUser> = mutableListOf()
+    companion object {
+        private const val ITEM_TYPE_USER = 1
+        private const val ITEM_TYPE_LOADING = 2
+    }
+
+    var users: MutableList<GitHubUser?> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -26,38 +31,63 @@ class UsersListAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): UserViewHolder {
+    ): RecyclerView.ViewHolder {
+        val holder: RecyclerView.ViewHolder
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_users_list, parent, false)
-        return UserViewHolder(view)
+        holder = if (viewType == ITEM_TYPE_USER) {
+            val view = inflater.inflate(R.layout.item_users_list, parent, false)
+            UserViewHolder(view)
+        } else {
+            val view = inflater.inflate(R.layout.item_loading, parent, false)
+            LoadingViewHolder(view)
+        }
+        return holder
     }
 
     override fun getItemCount(): Int {
         return users.size
     }
 
-    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val user = users[position]
-        with(holder) {
-            username.text = user.login
-            avatar.loadCircleImageFromUrl(user.avatarUrl)
-            userLayout.setOnClickListener {
-                viewModel.navigationCommands.value =
-                    NavigationCommand.To(
-                        UsersListFragmentDirections.actionUsersListFragmentToUserDetailsFragment(
-                            user.login
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val user = users[position] ?: return
+        if (holder is UserViewHolder) {
+            with(holder) {
+                username.text = user.login
+                avatar.loadCircleImageFromUrl(user.avatarUrl)
+                userLayout.setOnClickListener {
+                    viewModel.navigationCommands.value =
+                        NavigationCommand.To(
+                            UsersListFragmentDirections.actionUsersListFragmentToUserDetailsFragment(
+                                user.login
+                            )
                         )
-                    )
+                }
             }
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (users[position] == null)
+            ITEM_TYPE_LOADING
+        else
+            ITEM_TYPE_USER
+    }
+
+    fun showLoading() {
+        users.add(null)
+        notifyItemInserted(users.lastIndex)
+    }
+
     fun addUsers(data: List<GitHubUser>) {
         val lastPosition = users.lastIndex
+        users.remove(null)
         users.addAll(data)
         notifyItemChanged(lastPosition)
     }
 
     class UserViewHolder(override val containerView: View) : LayoutContainer,
+        RecyclerView.ViewHolder(containerView)
+
+    class LoadingViewHolder(override val containerView: View) : LayoutContainer,
         RecyclerView.ViewHolder(containerView)
 }
