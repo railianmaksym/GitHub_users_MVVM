@@ -80,7 +80,7 @@ class UsersListAdapter(
 
     fun addUsers(data: List<GitHubUser>) {
         val lastPosition = users.lastIndex
-        users.remove(null)
+        users = users.filterNotNull() as MutableList<GitHubUser?>
         users.addAll(data)
         notifyItemChanged(lastPosition)
     }
