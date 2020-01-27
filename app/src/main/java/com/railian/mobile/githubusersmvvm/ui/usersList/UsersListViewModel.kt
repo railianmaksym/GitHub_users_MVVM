@@ -16,7 +16,6 @@ class UsersListViewModel @Inject constructor(
     private var lastLoadedUserId: Int = 1
     val usersListAdapter = UsersListAdapter(this)
 
-    val screenState = MutableLiveData<ScreenState>()
     val navigationCommands = MutableLiveData<NavigationCommand>()
 
     fun loadUsers(isReload: Boolean = false) {

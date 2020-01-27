@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.userDetails.UserDetailsFragment">
 
     <include
@@ -13,13 +14,174 @@
         android:id="@+id/userLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/appBar"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:layout_below="@id/appBar">
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/avatarImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
 
         <TextView
+            android:id="@+id/usernameTXT"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="111"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            tools:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/accountUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:autoLink="web"
+            android:textAlignment="center"
+            tools:text="github.com/brianwood" />
+
+        <RelativeLayout
+            android:id="@+id/repositoriesLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp">
+
+            <TextView
+                android:id="@+id/reposLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Repositories"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/reposCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/reposLabel"
+                android:fontFamily="sans-serif-medium"
+                android:textAlignment="viewEnd"
+                android:textColor="#8F98A1"
+                android:textSize="18sp"
+                tools:text="22" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/gistsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp">
+
+            <TextView
+                android:id="@+id/gistsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Gists"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/gistsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/gistsLabel"
+                android:fontFamily="sans-serif-medium"
+                android:textAlignment="viewEnd"
+                android:textColor="#8F98A1"
+                android:textSize="18sp"
+                tools:text="22" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/followersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp">
+
+            <TextView
+                android:id="@+id/followersLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Followers"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/followersCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/followersLabel"
+                android:fontFamily="sans-serif-medium"
+                android:textAlignment="viewEnd"
+                android:textColor="#8F98A1"
+                android:textSize="18sp"
+                tools:text="22" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/followingLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp">
+
+            <TextView
+                android:id="@+id/followingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Following"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/followingCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/followingLabel"
+                android:fontFamily="sans-serif-medium"
+                android:textAlignment="viewEnd"
+                android:textColor="#8F98A1"
+                android:textSize="18sp"
+                tools:text="22" />
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 </RelativeLayout>
