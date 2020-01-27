@@ -10,7 +10,7 @@
         android:id="@+id/appBar"
         layout="@layout/appbar_title_only" />
 
-    <include layout="@layout/layout_error"/>
+    <include layout="@layout/layout_error" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/usersListRV"

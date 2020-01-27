@@ -12,11 +12,11 @@ import com.railian.mobile.githubusersmvvm.data.pojo.DetailGitHubUser
 import com.railian.mobile.githubusersmvvm.di.application.DaggerViewModelFactory
 import com.railian.mobile.githubusersmvvm.di.detailUser.DetailUserModule
 import com.railian.mobile.githubusersmvvm.util.extensions.loadCircleImageFromUrl
-import com.railian.mobile.githubusersmvvm.util.extensions.openUrl
 import com.railian.mobile.githubusersmvvm.util.ui.ScreenState
 import com.railian.mobile.githubusersmvvm.util.ui.SwipeRefreshFragment
 import kotlinx.android.synthetic.main.appbar_title_only.*
 import kotlinx.android.synthetic.main.fragment_user_details.*
+import kotlinx.android.synthetic.main.layout_error.*
 import javax.inject.Inject
 
 class UserDetailsFragment : SwipeRefreshFragment(R.layout.fragment_user_details) {
@@ -51,6 +51,10 @@ class UserDetailsFragment : SwipeRefreshFragment(R.layout.fragment_user_details)
             Observer<DetailGitHubUser> {
                 showUserInfo(it)
             })
+
+        viewModel.screenState.observe(this, Observer {
+            onStateChanged(it)
+        })
     }
 
     private fun showUserInfo(user: DetailGitHubUser) {
@@ -67,10 +71,19 @@ class UserDetailsFragment : SwipeRefreshFragment(R.layout.fragment_user_details)
 
     override fun onStateChanged(screenState: ScreenState) {
         when (screenState) {
-            ScreenState.CONTENT -> TODO()
-            ScreenState.LOADING -> TODO()
-            ScreenState.REFRESH -> TODO()
-            ScreenState.ERROR -> TODO()
+            ScreenState.CONTENT -> {
+                swipeRefreshLayout.isRefreshing = false
+                errorLayout.visibility = View.GONE
+                userLayout.visibility = View.VISIBLE
+            }
+            ScreenState.LOADING -> {}
+            ScreenState.REFRESH -> {
+                swipeRefreshLayout.isRefreshing = true
+            }
+            ScreenState.ERROR -> {
+                errorLayout.visibility = View.VISIBLE
+                userLayout.visibility = View.GONE
+            }
         }
     }
 
