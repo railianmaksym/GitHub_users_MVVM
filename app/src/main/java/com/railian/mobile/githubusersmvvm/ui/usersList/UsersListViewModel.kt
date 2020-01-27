@@ -24,7 +24,12 @@ class UsersListViewModel @Inject constructor(
         launchCoroutine(
             {
                 if (isReload) {
-                    repository.loadUsers(perPage = usersListAdapter.itemCount)
+                    repository.loadUsers(
+                        perPage = if (usersListAdapter.itemCount == 1)
+                            25
+                        else
+                            usersListAdapter.itemCount
+                    )
                 } else {
                     repository.loadUsers(lastLoadedUserId = lastLoadedUserId)
                 }

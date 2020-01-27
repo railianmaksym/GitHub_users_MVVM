@@ -15,6 +15,7 @@ import com.railian.mobile.githubusersmvvm.util.ui.LastItemListener
 import com.railian.mobile.githubusersmvvm.util.ui.ScreenState
 import com.railian.mobile.githubusersmvvm.util.ui.SwipeRefreshFragment
 import kotlinx.android.synthetic.main.fragment_users_list.*
+import kotlinx.android.synthetic.main.layout_error.*
 import javax.inject.Inject
 
 class UsersListFragment : SwipeRefreshFragment(R.layout.fragment_users_list) {
@@ -73,6 +74,8 @@ class UsersListFragment : SwipeRefreshFragment(R.layout.fragment_users_list) {
             ScreenState.CONTENT -> {
                 isLoading = false
                 swipeRefreshLayout.isRefreshing = false
+                errorLayout.visibility = View.GONE
+                usersListRV.visibility = View.VISIBLE
             }
             ScreenState.LOADING -> {
                 viewModel.usersListAdapter.showLoading()
@@ -81,6 +84,8 @@ class UsersListFragment : SwipeRefreshFragment(R.layout.fragment_users_list) {
                 swipeRefreshLayout.isRefreshing = true
             }
             ScreenState.ERROR -> {
+                usersListRV.visibility = View.GONE
+                errorLayout.visibility = View.VISIBLE
             }
         }
     }
